@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
 	"releaseband/internal/domain"
+
+	"github.com/gorilla/mux"
 )
 
 func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +30,6 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	JSONResponse(w, http.StatusOK, struct{}{})
-	return
 }
 
 func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +45,6 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
-
 	}
 	defer r.Body.Close()
 
@@ -56,7 +55,6 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	JSONResponse(w, http.StatusOK, struct{}{})
-	return
 }
 
 func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
@@ -72,7 +70,6 @@ func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
-
 	}
 	defer r.Body.Close()
 
@@ -83,5 +80,4 @@ func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
 	}
 
 	JSONResponse(w, http.StatusOK, struct{}{})
-	return
 }

@@ -70,7 +70,6 @@ func (data *GameDate) Validate() error {
 	}
 
 	return nil
-
 }
 func (data *GameDate) Calculate() Result {
 	var result Result

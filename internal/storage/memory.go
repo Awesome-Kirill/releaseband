@@ -22,7 +22,6 @@ func (m *InMemory) Get(id string) (*domain.GameDate, bool) {
 
 	v, ok := m.data[id]
 	return v, ok
-
 }
 
 func (m *InMemory) Set(id string, input *domain.GameDate) {
@@ -36,7 +35,6 @@ func (m *InMemory) Set(id string, input *domain.GameDate) {
 
 	if input.WinLines != nil {
 		game.WinLines = input.WinLines
-
 	}
 
 	if input.Payouts != nil {
@@ -44,7 +42,6 @@ func (m *InMemory) Set(id string, input *domain.GameDate) {
 	}
 
 	if input.Reels != nil {
-
 		game.Reels = input.Reels
 	}
 

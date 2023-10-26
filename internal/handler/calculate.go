@@ -2,17 +2,18 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
 	"releaseband/internal/service"
+
+	"github.com/gorilla/mux"
 )
 
 type Handler struct {
 	service *service.Service
 }
 
-func New(service *service.Service) *Handler {
-	return &Handler{service: service}
+func New(serv *service.Service) *Handler {
+	return &Handler{service: serv}
 }
 func JSONResponse(w http.ResponseWriter, code int, output interface{}) {
 	response, _ := json.Marshal(output)
@@ -40,5 +41,4 @@ func (h *Handler) CalculateGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	JSONResponse(w, http.StatusOK, result)
-	return
 }

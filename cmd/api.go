@@ -2,8 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/gorilla/mux"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,9 +10,22 @@ import (
 	"releaseband/internal/service"
 	"releaseband/internal/storage"
 	"time"
+
+	"github.com/gorilla/mux"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
+
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(
+		collectors.NewGoCollector(),
+		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
+	)
 
 	handler := handler.New(service.New(storage.New()))
 	r := mux.NewRouter()
@@ -24,6 +36,7 @@ func main() {
 	r.HandleFunc("/v1/game/{id}/payouts", handler.CreatePayouts).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/lines", handler.CreateRLines).Methods("POST")
 
+	r.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
 	srv := &http.Server{
 		Addr:         "0.0.0.0:8080",
 		WriteTimeout: time.Second * 15,
@@ -34,8 +47,9 @@ func main() {
 
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
+		logger.Info("server start")
 		if err := srv.ListenAndServe(); err != nil {
-			log.Println(err)
+			logger.Error("ListenAndServe error:", err)
 		}
 	}()
 
@@ -45,11 +59,10 @@ func main() {
 
 	<-c
 
+	logger.Info("shutting down")
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	srv.Shutdown(ctx)
-
-	log.Println("shutting down")
-	os.Exit(0)
 }
