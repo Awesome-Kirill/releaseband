@@ -171,9 +171,9 @@ func TestGameDate_Calculate(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			data := &GameDate{
-				reels:    tt.fields.reels,
-				winLines: tt.fields.winLines,
-				payouts:  tt.fields.payouts,
+				Reels:    &tt.fields.reels,
+				WinLines: &tt.fields.winLines,
+				Payouts:  &tt.fields.payouts,
 			}
 			if got := data.Calculate(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Calculate() = %v, want %v", got, tt.want)

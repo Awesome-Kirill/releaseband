@@ -1,5 +1,7 @@
 package domain
 
+import "errors"
+
 type Reels [3][5]string
 
 type WinLine struct {
@@ -30,9 +32,9 @@ type Result struct {
 }
 
 type GameDate struct {
-	reels    Reels
-	winLines WinLines
-	payouts  Payouts // todo map
+	Reels    *Reels
+	WinLines *WinLines
+	Payouts  *Payouts // todo map
 }
 
 // todo
@@ -54,14 +56,32 @@ func calculateWinLinePayout(line [5]string, payoutMatrix Payouts) int {
 
 	return 0
 }
+func (data *GameDate) Validate() error {
+	if data.WinLines == nil {
+		return errors.New("lines is empty")
+	}
+
+	if data.Payouts == nil {
+		return errors.New("payouts is empty")
+	}
+
+	if data.Reels == nil {
+		return errors.New("reels is empty")
+	}
+
+	return nil
+
+}
 func (data *GameDate) Calculate() Result {
 	var result Result
-	for _, value := range data.winLines {
+	result.Lines = make([]Line, 0, len(*data.WinLines))
+	for _, value := range *data.WinLines {
+		// todo
 		var r [5]string
 		for index, position := range value.Positions {
-			r[index] = data.reels[position.Row][position.Col]
+			r[index] = data.Reels[position.Row][position.Col]
 		}
-		win := calculateWinLinePayout(r, data.payouts)
+		win := calculateWinLinePayout(r, *data.Payouts)
 		result.Total += win
 
 		result.Lines = append(result.Lines, Line{
