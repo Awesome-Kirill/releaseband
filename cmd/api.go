@@ -7,36 +7,46 @@ import (
 	"os"
 	"os/signal"
 	"releaseband/internal/handler"
+	"releaseband/internal/metrics"
 	"releaseband/internal/service"
 	"releaseband/internal/storage"
 	"time"
 
 	"github.com/gorilla/mux"
 
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+/*
+Метрические данные должны включать в себя как минимум следующие метрики:
+
+Общее количество обработанных запросов к API-endpoints;
+Количество ошибок обработки HTTP запросов к API-endpoints;
+Данные по времени обработки HTTP запросов к API-endpoint;
+*/
+// Логирование
+// найминг
+// тесты
+// линтер
+// общая архитетура
+// валидация
 func main() {
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	reg := prometheus.NewRegistry()
-	reg.MustRegister(
-		collectors.NewGoCollector(),
-		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
-	)
+
+	metricsMiddelware := metrics.New()
 
 	handler := handler.New(service.New(storage.New()))
 	r := mux.NewRouter()
-	// Add your routes as needed
+
 	r.HandleFunc("/v1/game/{id}/calculate", handler.CalculateGame).Methods("GET")
 
 	r.HandleFunc("/v1/game/{id}/reels", handler.CreateReels).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/payouts", handler.CreatePayouts).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/lines", handler.CreateRLines).Methods("POST")
+	r.Use(metricsMiddelware.Middleware)
+	r.Handle("/metrics", promhttp.Handler())
 
-	r.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
 	srv := &http.Server{
 		Addr:         "0.0.0.0:8080",
 		WriteTimeout: time.Second * 15,
