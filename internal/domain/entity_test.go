@@ -13,18 +13,18 @@ func TestGameDate_Calculate(t *testing.T) {
 		[5]string{"D", "E", "A", "G", "A"},
 	}
 
-	winLines0 := WinLines{WinLine{
-		Line:      1,
+	winLines0 := Lines{WinLine{
+		Index:     1,
 		Positions: []Position{{0, 0}, {1, 1}, {2, 2}, {1, 3}, {0, 4}},
 	},
 
 		WinLine{
-			Line:      2,
+			Index:     2,
 			Positions: []Position{{2, 0}, {1, 1}, {0, 2}, {1, 3}, {2, 4}},
 		},
 
 		WinLine{
-			Line:      3,
+			Index:     3,
 			Positions: []Position{{1, 0}, {2, 1}, {1, 2}, {0, 3}, {1, 4}},
 		},
 	}
@@ -69,7 +69,7 @@ func TestGameDate_Calculate(t *testing.T) {
 	}
 	type fields struct {
 		reels    Reels
-		winLines WinLines
+		winLines Lines
 		payouts  Payouts
 	}
 	tests := []struct {
@@ -90,29 +90,9 @@ func TestGameDate_Calculate(t *testing.T) {
 				WinLines: &tt.fields.winLines,
 				Payouts:  &tt.fields.payouts,
 			}
-			if got := data.Calculate(); !reflect.DeepEqual(got, tt.want) {
+			// todo err
+			if got, _ := data.Calculate(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Calculate() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_calculateWinLinePayout(t *testing.T) {
-	type args struct {
-		line         [5]string
-		payoutMatrix Payouts
-	}
-	tests := []struct {
-		name string
-		args args
-		want int
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := calculateWinLinePayout(tt.args.line, tt.args.payoutMatrix); got != tt.want {
-				t.Errorf("calculateWinLinePayout() = %v, want %v", got, tt.want)
 			}
 		})
 	}

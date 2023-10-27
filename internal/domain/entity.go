@@ -1,11 +1,20 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type Reels [3][5]string
 
+var Alphabet = map[string]struct{}{
+	"A": {}, "B": {}, "C": {},
+	"D": {}, "E": {}, "F": {},
+	"G": {},
+}
+
 type WinLine struct {
-	Line      int        `json:"line"`
+	Index     int        `json:"line"`
 	Positions []Position `json:"positions"`
 }
 
@@ -13,7 +22,7 @@ type Position struct {
 	Row int `json:"row"`
 	Col int `json:"col"`
 }
-type WinLines []WinLine
+type Lines []WinLine
 
 type PayoutSymbol struct {
 	Symbol string `json:"symbol"`
@@ -23,7 +32,7 @@ type PayoutSymbol struct {
 type Payouts []PayoutSymbol
 
 type Line struct {
-	X      int `json:"line"`
+	Index  int `json:"line"`
 	Payout int `json:"payout"`
 }
 type Result struct {
@@ -33,61 +42,78 @@ type Result struct {
 
 type GameDate struct {
 	Reels    *Reels
-	WinLines *WinLines
+	WinLines *Lines
 	Payouts  *Payouts // todo map
 }
 
+func (r Reels) Validate() error {
+	for indexR, row := range r {
+		for indexC, column := range row {
+			_, ok := Alphabet[column]
+			if !ok {
+				return fmt.Errorf("not valid in char in row:%v, column:%v", indexR, indexC)
+			}
+		}
+	}
+	return nil
+}
+
 // todo
-func calculateWinLinePayout(line [5]string, payoutMatrix Payouts) int {
+func (g *GameDate) calculateWinLinePayout(line [5]string) int {
 	var count int
 
+	// todo test index out of range
 	for i := 0; i < 4; i++ {
 		if line[i] != line[i+1] {
 			break
 		}
 		count++
 	}
-	for _, payout := range payoutMatrix {
+	for _, payout := range *g.Payouts {
 		if payout.Symbol == line[0] {
-			// todo
 			return payout.Payout[count]
 		}
 	}
 
 	return 0
 }
-func (data *GameDate) Validate() error {
-	if data.WinLines == nil {
+func (g *GameDate) validate() error {
+	if g.WinLines == nil {
 		return errors.New("lines is empty")
 	}
 
-	if data.Payouts == nil {
+	if g.Payouts == nil {
 		return errors.New("payouts is empty")
 	}
 
-	if data.Reels == nil {
+	if g.Reels == nil {
 		return errors.New("reels is empty")
 	}
 
 	return nil
 }
-func (data *GameDate) Calculate() Result {
+
+func (g *GameDate) Calculate() (Result, error) {
 	var result Result
-	result.Lines = make([]Line, 0, len(*data.WinLines))
-	for _, value := range *data.WinLines {
-		// todo
-		var r [5]string
+	err := g.validate()
+	if err != nil {
+		return result, err
+	}
+
+	result.Lines = make([]Line, 0, len(*g.WinLines))
+	for _, value := range *g.WinLines {
+		var row [5]string
 		for index, position := range value.Positions {
-			r[index] = data.Reels[position.Row][position.Col]
+			row[index] = g.Reels[position.Row][position.Col]
 		}
-		win := calculateWinLinePayout(r, *data.Payouts)
+		win := g.calculateWinLinePayout(row)
 		result.Total += win
 
 		result.Lines = append(result.Lines, Line{
-			X:      value.Line,
+			Index:  value.Index,
 			Payout: win,
 		})
 	}
 
-	return result
+	return result, nil
 }

@@ -24,6 +24,11 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
+	err = reels.Validate()
+	if err != nil {
+		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		return
+	}
 	err = h.service.CreateOrUpdate(id, &domain.GameDate{Reels: &reels})
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
@@ -65,7 +70,7 @@ func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var win domain.WinLines
+	var win domain.Lines
 	err := json.NewDecoder(r.Body).Decode(&win)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})

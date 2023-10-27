@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"releaseband/internal/domain"
 )
 
@@ -29,11 +28,5 @@ func (s *Service) GetCalculateDate(id string) (domain.Result, error) {
 		return domain.Result{}, errors.New("not found")
 	}
 
-	err := game.Validate()
-
-	if err != nil {
-		return domain.Result{}, fmt.Errorf("not valid game: %w", err)
-	}
-
-	return game.Calculate(), nil
+	return game.Calculate()
 }
