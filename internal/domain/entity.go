@@ -46,6 +46,7 @@ type GameDate struct {
 	Payouts  *Payouts // todo map
 }
 
+// Validate input reels. Available only A-G symbol
 func (r *Reels) Validate() error {
 	for indexR, row := range r {
 		for indexC, column := range row {
@@ -58,11 +59,9 @@ func (r *Reels) Validate() error {
 	return nil
 }
 
-// todo
-func (g *GameDate) calculateRepeated(line [5]string) int {
+// count of repeat char(first) in array char
+func (g *GameDate) getRepeatedCount(line [5]string) int {
 	count := 1
-
-	// todo test index out of range
 	for i := 0; i < 4; i++ {
 		if line[i] != line[i+1] {
 			break
@@ -72,9 +71,11 @@ func (g *GameDate) calculateRepeated(line [5]string) int {
 
 	return count
 }
+
+// calculate one line win
 func (g *GameDate) calculateWinLinePayout(line [5]string) int {
 
-	count := g.calculateRepeated(line)
+	count := g.getRepeatedCount(line)
 	for _, payout := range *g.Payouts {
 		if payout.Symbol == line[0] {
 			return payout.Payout[count-1]
@@ -83,6 +84,8 @@ func (g *GameDate) calculateWinLinePayout(line [5]string) int {
 
 	return 0
 }
+
+// check all three struct(reels lines payouts) is not empty
 func (g *GameDate) validate() error {
 	if g.WinLines == nil {
 		return errors.New("lines is empty")
@@ -99,6 +102,7 @@ func (g *GameDate) validate() error {
 	return nil
 }
 
+// Calculate game
 func (g *GameDate) Calculate() (Result, error) {
 	var result Result
 	err := g.validate()

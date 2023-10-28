@@ -16,6 +16,8 @@ func New() *InMemory {
 		data: make(map[string]*domain.GameDate),
 	}
 }
+
+// Get by id all three game date
 func (m *InMemory) Get(id string) (*domain.GameDate, bool) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
@@ -24,6 +26,7 @@ func (m *InMemory) Get(id string) (*domain.GameDate, bool) {
 	return v, ok
 }
 
+// Set (create or update) all three date
 func (m *InMemory) Set(id string, input *domain.GameDate) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

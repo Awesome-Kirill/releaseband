@@ -133,8 +133,8 @@ func TestGameDate_calculateRepeated(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			g := &GameDate{}
-			if got := g.calculateRepeated(tt.line); got != tt.want {
-				t.Errorf("calculateRepeated() = %v, want %v", got, tt.want)
+			if got := g.getRepeatedCount(tt.line); got != tt.want {
+				t.Errorf("getRepeatedCount() = %v, want %v", got, tt.want)
 			}
 		})
 	}

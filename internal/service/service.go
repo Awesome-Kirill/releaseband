@@ -18,6 +18,9 @@ func New(repository Repository) *Service {
 	return &Service{repository: repository}
 }
 func (s *Service) CreateOrUpdate(id string, input *domain.GameDate) error {
+	if input.WinLines == nil && input.Reels == nil && input.Payouts == nil {
+		return errors.New("err empty date")
+	}
 	s.repository.Set(id, input)
 	return nil
 }
