@@ -1,21 +1,22 @@
 package metrics
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/urfave/negroni"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/urfave/negroni"
 )
 
-type MetricsMiddleware struct {
+type Middleware struct {
 	client *PrometheusClient
 }
 
-func New() *MetricsMiddleware {
-	return &MetricsMiddleware{client: NewPrometheusClient()}
+func New() *Middleware {
+	return &Middleware{client: NewPrometheusClient()}
 }
-func (m *MetricsMiddleware) Middleware(h http.Handler) http.Handler {
+func (m *Middleware) After(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
 
@@ -30,6 +31,6 @@ func (m *MetricsMiddleware) Middleware(h http.Handler) http.Handler {
 
 			time.Since(startTime),
 		)
-		m.client.TotalHttpCount.Inc()
+		m.client.TotalHTTPCount.Inc()
 	})
 }

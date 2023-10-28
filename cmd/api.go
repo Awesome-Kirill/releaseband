@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"releaseband/config"
 	"releaseband/internal/handler"
 	"releaseband/internal/metrics"
 	"releaseband/internal/service"
@@ -32,6 +34,8 @@ import (
 // валидация
 func main() {
 
+	cfg := config.New()
+	fmt.Println(cfg.HTTPAddr)
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	metricsMiddelware := metrics.New()
@@ -44,11 +48,11 @@ func main() {
 	r.HandleFunc("/v1/game/{id}/reels", handler.CreateReels).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/payouts", handler.CreatePayouts).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/lines", handler.CreateRLines).Methods("POST")
-	r.Use(metricsMiddelware.Middleware)
+	r.Use(metricsMiddelware.After)
 	r.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{
-		Addr:         "0.0.0.0:8080",
+		Addr:         "0.0.0.0:8080", //cfg.HTTPAddr
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,

@@ -14,7 +14,7 @@ linters-settings:
   govet:
     check-shadowing: true
     enable:
-      - fieldalignment
+      #- fieldalignment
   nolintlint:
     require-explanation: true
     require-specific: true

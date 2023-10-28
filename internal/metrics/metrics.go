@@ -1,8 +1,9 @@
 package metrics
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type prometheusClientConfig struct {
@@ -12,7 +13,7 @@ type prometheusClientConfig struct {
 type PrometheusClient struct {
 	httpServerRequest         *prometheus.CounterVec
 	httpServerRequestDuration *prometheus.HistogramVec
-	TotalHttpCount            prometheus.Counter
+	TotalHTTPCount            prometheus.Counter
 }
 
 func (p *PrometheusClient) IncrHTTPServerRequests(labels map[string]string, duration time.Duration) {
@@ -51,19 +52,19 @@ func NewPrometheusClient() *PrometheusClient {
 		httpServerLabels,
 	)
 
-	totalHttpCount := prometheus.NewCounter(prometheus.CounterOpts{
+	totalHTTPCount := prometheus.NewCounter(prometheus.CounterOpts{
 		Name: "http_request_total",
 	})
 	pc := &PrometheusClient{
 		httpServerRequest:         serverRequest,
 		httpServerRequestDuration: serverRequestDuration,
-		TotalHttpCount:            totalHttpCount,
+		TotalHTTPCount:            totalHTTPCount,
 	}
 
 	prometheus.MustRegister(
 		pc.httpServerRequest,
 		pc.httpServerRequestDuration,
-		totalHttpCount,
+		totalHTTPCount,
 	)
 
 	return pc

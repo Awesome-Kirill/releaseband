@@ -6,7 +6,6 @@ import (
 )
 
 func TestGameDate_Calculate(t *testing.T) {
-
 	reels0 := Reels{
 		[5]string{"A", "B", "C", "D", "E"},
 		[5]string{"F", "A", "F", "B", "C"},

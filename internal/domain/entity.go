@@ -46,7 +46,7 @@ type GameDate struct {
 	Payouts  *Payouts // todo map
 }
 
-func (r Reels) Validate() error {
+func (r *Reels) Validate() error {
 	for indexR, row := range r {
 		for indexC, column := range row {
 			_, ok := Alphabet[column]
