@@ -96,3 +96,46 @@ func TestGameDate_Calculate(t *testing.T) {
 		})
 	}
 }
+
+func TestGameDate_calculateRepeated(t *testing.T) {
+
+	type TestCase struct {
+		name string
+		line [5]string
+		want int
+	}
+	tests := []TestCase{{
+		name: "3",
+		line: [5]string{"A", "A", "A", "X", "C"},
+		want: 3,
+	}, {
+		name: "2",
+		line: [5]string{"A", "A", "V", "X", "C"},
+		want: 2,
+	},
+		{
+			name: "1",
+			line: [5]string{"A", "C", "V", "X", "C"},
+			want: 1,
+		},
+		{
+			name: "5",
+			line: [5]string{"A", "A", "A", "A", "A"},
+			want: 5,
+		},
+		{
+			name: "4",
+			line: [5]string{"A", "A", "A", "A", "X"},
+			want: 4,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &GameDate{}
+			if got := g.calculateRepeated(tt.line); got != tt.want {
+				t.Errorf("calculateRepeated() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

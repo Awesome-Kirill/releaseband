@@ -59,8 +59,8 @@ func (r *Reels) Validate() error {
 }
 
 // todo
-func (g *GameDate) calculateWinLinePayout(line [5]string) int {
-	var count int
+func (g *GameDate) calculateRepeated(line [5]string) int {
+	count := 1
 
 	// todo test index out of range
 	for i := 0; i < 4; i++ {
@@ -69,9 +69,15 @@ func (g *GameDate) calculateWinLinePayout(line [5]string) int {
 		}
 		count++
 	}
+
+	return count
+}
+func (g *GameDate) calculateWinLinePayout(line [5]string) int {
+
+	count := g.calculateRepeated(line)
 	for _, payout := range *g.Payouts {
 		if payout.Symbol == line[0] {
-			return payout.Payout[count]
+			return payout.Payout[count-1]
 		}
 	}
 
