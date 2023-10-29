@@ -6,13 +6,13 @@ import (
 )
 
 type InMemory struct {
-	mu   sync.RWMutex
+	mu   *sync.RWMutex
 	data map[string]*domain.GameDate
 }
 
 func New() *InMemory {
 	return &InMemory{
-		mu:   sync.RWMutex{},
+		mu:   &sync.RWMutex{},
 		data: make(map[string]*domain.GameDate),
 	}
 }

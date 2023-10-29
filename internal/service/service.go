@@ -31,7 +31,6 @@ func (s *Service) CreateLines(id string, lines domain.Lines) error {
 }
 
 func (s *Service) CreateReels(id string, reels domain.Reels) error {
-
 	err := reels.Validate()
 	if err != nil {
 		return fmt.Errorf("error reels lines:%v|%w", id, err)
@@ -41,7 +40,6 @@ func (s *Service) CreateReels(id string, reels domain.Reels) error {
 }
 
 func (s *Service) CreatePayouts(id string, payouts domain.Payouts) error {
-
 	err := payouts.Validate()
 	if err != nil {
 		return fmt.Errorf("error reels lines:%v|%w", id, err)

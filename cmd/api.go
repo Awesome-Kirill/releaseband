@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -35,7 +34,6 @@ import (
 func main() {
 
 	cfg := config.New()
-	fmt.Println(cfg.HTTPAddr)
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	metricsMiddelware := metrics.New()
@@ -52,10 +50,10 @@ func main() {
 	r.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{
-		Addr:         "0.0.0.0:8080", //cfg.HTTPAddr
-		WriteTimeout: time.Second * 15,
-		ReadTimeout:  time.Second * 15,
-		IdleTimeout:  time.Second * 60,
+		Addr:         cfg.HTTPAddr, //cfg.HTTPAddr
+		WriteTimeout: cfg.HTTPWTimeout,
+		ReadTimeout:  cfg.HTTPRTimeout,
+		IdleTimeout:  cfg.HTTPITimeout,
 		Handler:      r,
 	}
 

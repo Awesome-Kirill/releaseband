@@ -11,10 +11,10 @@ build: build-src
 	./bin/${NAME}
 
 test:
-	go test  ./... --tags=tests
+	go test  ./...
 
 test-cov:
-	go test --tags=tests -coverpkg=./internal/... -coverprofile=coverage.txt ./...
+	go test -coverpkg=./internal/... -coverprofile=coverage.txt ./...
 	go tool cover -func coverage.txt
 	rm coverage.txt
 
