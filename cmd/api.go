@@ -41,13 +41,13 @@ func main() {
 	metricsMiddelware := metrics.New()
 
 	handler := handler.New(service.New(storage.New()))
-	r := mux.NewRouter()
 
+	r := mux.NewRouter()
 	r.HandleFunc("/v1/game/{id}/calculate", handler.CalculateGame).Methods("GET")
 
 	r.HandleFunc("/v1/game/{id}/reels", handler.CreateReels).Methods("POST")
 	r.HandleFunc("/v1/game/{id}/payouts", handler.CreatePayouts).Methods("POST")
-	r.HandleFunc("/v1/game/{id}/lines", handler.CreateRLines).Methods("POST")
+	r.HandleFunc("/v1/game/{id}/lines", handler.CreateLines).Methods("POST")
 	r.Use(metricsMiddelware.After)
 	r.Handle("/metrics", promhttp.Handler())
 

@@ -17,8 +17,8 @@ func New() *InMemory {
 	}
 }
 
-// Get by id all three game date
-func (m *InMemory) Get(id string) (*domain.GameDate, bool) {
+// GetGame by id all three game date
+func (m *InMemory) GetGame(id string) (*domain.GameDate, bool) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
@@ -26,8 +26,8 @@ func (m *InMemory) Get(id string) (*domain.GameDate, bool) {
 	return v, ok
 }
 
-// Set (create or update) all three date
-func (m *InMemory) Set(id string, input *domain.GameDate) {
+// SetPayouts Set Payouts
+func (m *InMemory) SetPayouts(id string, payouts domain.Payouts) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	v, ok := m.data[id]
@@ -36,17 +36,35 @@ func (m *InMemory) Set(id string, input *domain.GameDate) {
 		game = *v
 	}
 
-	if input.WinLines != nil {
-		game.WinLines = input.WinLines
+	game.Payouts = &payouts
+
+	m.data[id] = &game
+}
+
+func (m *InMemory) SetLines(id string, lines domain.Lines) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	v, ok := m.data[id]
+	var game domain.GameDate
+	if ok {
+		game = *v
 	}
 
-	if input.Payouts != nil {
-		game.Payouts = input.Payouts
+	game.Lines = &lines
+
+	m.data[id] = &game
+}
+
+func (m *InMemory) SetReels(id string, reels domain.Reels) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	v, ok := m.data[id]
+	var game domain.GameDate
+	if ok {
+		game = *v
 	}
 
-	if input.Reels != nil {
-		game.Reels = input.Reels
-	}
+	game.Reels = &reels
 
 	m.data[id] = &game
 }

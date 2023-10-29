@@ -85,9 +85,9 @@ func TestGameDate_Calculate(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			data := &GameDate{
-				Reels:    &tt.fields.reels,
-				WinLines: &tt.fields.winLines,
-				Payouts:  &tt.fields.payouts,
+				Reels:   &tt.fields.reels,
+				Lines:   &tt.fields.winLines,
+				Payouts: &tt.fields.payouts,
 			}
 			// todo err
 			if got, _ := data.Calculate(); !reflect.DeepEqual(got, tt.want) {

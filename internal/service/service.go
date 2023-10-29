@@ -2,12 +2,15 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"releaseband/internal/domain"
 )
 
 type Repository interface {
-	Get(id string) (*domain.GameDate, bool)
-	Set(id string, input *domain.GameDate)
+	GetGame(id string) (*domain.GameDate, bool)
+	SetLines(id string, input domain.Lines)
+	SetPayouts(id string, pay domain.Payouts)
+	SetReels(id string, reels domain.Reels)
 }
 
 type Service struct {
@@ -17,16 +20,38 @@ type Service struct {
 func New(repository Repository) *Service {
 	return &Service{repository: repository}
 }
-func (s *Service) CreateOrUpdate(id string, input *domain.GameDate) error {
-	if input.WinLines == nil && input.Reels == nil && input.Payouts == nil {
-		return errors.New("err empty date")
+func (s *Service) CreateLines(id string, lines domain.Lines) error {
+
+	err := lines.Validate()
+	if err != nil {
+		return fmt.Errorf("error create lines:%v|%w", id, err)
 	}
-	s.repository.Set(id, input)
+	s.repository.SetLines(id, lines)
+	return nil
+}
+
+func (s *Service) CreateReels(id string, reels domain.Reels) error {
+
+	err := reels.Validate()
+	if err != nil {
+		return fmt.Errorf("error reels lines:%v|%w", id, err)
+	}
+	s.repository.SetReels(id, reels)
+	return nil
+}
+
+func (s *Service) CreatePayouts(id string, payouts domain.Payouts) error {
+
+	err := payouts.Validate()
+	if err != nil {
+		return fmt.Errorf("error reels lines:%v|%w", id, err)
+	}
+	s.repository.SetPayouts(id, payouts)
 	return nil
 }
 
 func (s *Service) GetCalculateDate(id string) (domain.Result, error) {
-	game, ok := s.repository.Get(id)
+	game, ok := s.repository.GetGame(id)
 	if !ok {
 		return domain.Result{}, errors.New("not found")
 	}

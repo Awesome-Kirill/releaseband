@@ -24,12 +24,7 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	err = reels.Validate()
-	if err != nil {
-		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
-		return
-	}
-	err = h.service.CreateOrUpdate(id, &domain.GameDate{Reels: &reels})
+	err = h.service.CreateReels(id, reels)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
@@ -53,7 +48,7 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	err = h.service.CreateOrUpdate(id, &domain.GameDate{Payouts: &pay})
+	err = h.service.CreatePayouts(id, pay)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
@@ -62,7 +57,7 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, struct{}{})
 }
 
-func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) CreateLines(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
 	if !ok {
@@ -70,15 +65,15 @@ func (h *Handler) CreateRLines(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var win domain.Lines
-	err := json.NewDecoder(r.Body).Decode(&win)
+	var lines domain.Lines
+	err := json.NewDecoder(r.Body).Decode(&lines)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
 	}
 	defer r.Body.Close()
 
-	err = h.service.CreateOrUpdate(id, &domain.GameDate{WinLines: &win})
+	err = h.service.CreateLines(id, lines)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
