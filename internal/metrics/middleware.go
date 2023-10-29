@@ -31,6 +31,5 @@ func (m *Middleware) After(h http.Handler) http.Handler {
 
 			time.Since(startTime),
 		)
-		m.client.TotalHTTPCount.Inc()
 	})
 }

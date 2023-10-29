@@ -13,12 +13,12 @@ type prometheusClientConfig struct {
 type PrometheusClient struct {
 	httpServerRequest         *prometheus.CounterVec
 	httpServerRequestDuration *prometheus.HistogramVec
-	TotalHTTPCount            prometheus.Counter
+	totalHTTPCount            prometheus.Counter
 }
 
 func (p *PrometheusClient) IncrHTTPServerRequests(labels map[string]string, duration time.Duration) {
 	p.httpServerRequest.With(labels).Inc()
-
+	p.totalHTTPCount.Inc()
 	p.httpServerRequestDuration.With(labels).Observe(duration.Seconds())
 }
 
@@ -55,10 +55,11 @@ func NewPrometheusClient() *PrometheusClient {
 	totalHTTPCount := prometheus.NewCounter(prometheus.CounterOpts{
 		Name: "http_request_total",
 	})
+
 	pc := &PrometheusClient{
 		httpServerRequest:         serverRequest,
 		httpServerRequestDuration: serverRequestDuration,
-		TotalHTTPCount:            totalHTTPCount,
+		totalHTTPCount:            totalHTTPCount,
 	}
 
 	prometheus.MustRegister(
