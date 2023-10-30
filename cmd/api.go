@@ -18,7 +18,12 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// run main
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server Petstore server.
+// @contact.email k.a.stulnikov@gmail.com
+// @BasePath /v1
+
 func main() {
 
 	cfg := config.New()

@@ -33,6 +33,13 @@ type ErrorResponse struct {
 	Error string
 }
 
+// CalculateGame godoc
+// @Summary     Return game result
+// @Description Return game result
+// @Param id   path string true "Game ID"
+// @Produce     json
+// @Success     200               {object} domain.Result
+// @Router      /game/{id}/calculate [get]
 func (h *Handler) CalculateGame(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]

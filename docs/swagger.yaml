@@ -1,0 +1,133 @@
+basePath: /v1
+definitions:
+  domain.Line:
+    properties:
+      line:
+        type: integer
+      payout:
+        type: integer
+    type: object
+  domain.PayoutSymbol:
+    properties:
+      payout:
+        items:
+          type: integer
+        type: array
+      symbol:
+        type: string
+    type: object
+  domain.Position:
+    properties:
+      col:
+        type: integer
+      row:
+        type: integer
+    type: object
+  domain.Result:
+    properties:
+      lines:
+        items:
+          $ref: '#/definitions/domain.Line'
+        type: array
+      total:
+        type: integer
+    type: object
+  domain.WinLine:
+    properties:
+      line:
+        type: integer
+      positions:
+        items:
+          $ref: '#/definitions/domain.Position'
+        type: array
+    type: object
+info:
+  contact:
+    email: k.a.stulnikov@gmail.com
+  description: This is a sample server Petstore server.
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /game/{id}/calculate:
+    get:
+      description: Return game result
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Result'
+      summary: Return game result
+  /game/{id}/lines:
+    post:
+      description: Return game result
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Some ID
+        in: body
+        name: some_id
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/domain.WinLine'
+          type: array
+      produces:
+      - application/json
+      responses: {}
+      summary: Return game result
+  /game/{id}/payouts:
+    post:
+      description: Return game result
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Some ID
+        in: body
+        name: some_id
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/domain.PayoutSymbol'
+          type: array
+      produces:
+      - application/json
+      responses: {}
+      summary: Return game result
+  /game/{id}/reels:
+    post:
+      description: Return game result
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Some ID
+        in: body
+        name: some_id
+        required: true
+        schema:
+          items:
+            items:
+              type: string
+            type: array
+          type: array
+      produces:
+      - application/json
+      responses: {}
+      summary: Return game result
+swagger: "2.0"

@@ -9,6 +9,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// CreateReels godoc
+// @Summary     Return game result
+// @Description Return game result
+// @Param id   path string true "Game ID"
+// @Param		some_id	body		domain.Reels		true	"Some ID"
+// @Produce     json
+// @Router      /game/{id}/reels [post]
 func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
@@ -35,6 +42,13 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, struct{}{})
 }
 
+// CreatePayouts godoc
+// @Summary     Return game result
+// @Description Return game result
+// @Param id   path string true "Game ID"
+// @Param		some_id	body		domain.Payouts		true	"Some ID"
+// @Produce     json
+// @Router      /game/{id}/payouts [post]
 func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
@@ -62,6 +76,13 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, struct{}{})
 }
 
+// CreateLines godoc
+// @Summary     Return game result
+// @Description Return game result
+// @Param id   path string true "Game ID"
+// @Param		some_id	body		domain.Lines		true	"Some ID"
+// @Produce     json
+// @Router      /game/{id}/lines [post]
 func (h *Handler) CreateLines(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
