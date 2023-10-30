@@ -138,3 +138,38 @@ func TestGameDate_calculateRepeated(t *testing.T) {
 		})
 	}
 }
+
+func TestGameDate_validate(t *testing.T) {
+	type fields struct {
+		Reels   *Reels
+		Lines   *Lines
+		Payouts *Payouts
+	}
+	tests := []struct {
+		fields  fields
+		wantErr bool
+	}{
+		{fields: fields{
+			Reels:   nil,
+			Lines:   nil,
+			Payouts: nil,
+		}, wantErr: true},
+
+		{
+			fields:  fields{Reels: &Reels{}, Payouts: &Payouts{}, Lines: &Lines{}},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run("", func(t *testing.T) {
+			g := &GameDate{
+				Reels:   tt.fields.Reels,
+				Lines:   tt.fields.Lines,
+				Payouts: tt.fields.Payouts,
+			}
+			if err := g.validate(); (err != nil) != tt.wantErr {
+				t.Errorf("validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

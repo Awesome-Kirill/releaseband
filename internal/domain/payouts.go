@@ -12,7 +12,7 @@ type Payouts []PayoutSymbol
 // Validate Payouts
 func (p Payouts) Validate() error {
 	for _, payoutSymbol := range p {
-		_, ok := Alphabet[payoutSymbol.Symbol]
+		_, ok := alphabet[payoutSymbol.Symbol]
 		if !ok {
 			return fmt.Errorf("eroor : symbol:%v not in alphabet", payoutSymbol)
 		}

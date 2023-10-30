@@ -4,7 +4,7 @@ import "fmt"
 
 type Reels [3][5]string
 
-var Alphabet = map[string]struct{}{
+var alphabet = map[string]struct{}{
 	"A": {}, "B": {}, "C": {},
 	"D": {}, "E": {}, "F": {},
 	"G": {},
@@ -14,7 +14,7 @@ var Alphabet = map[string]struct{}{
 func (r *Reels) Validate() error {
 	for indexR, row := range r {
 		for indexC, column := range row {
-			_, ok := Alphabet[column]
+			_, ok := alphabet[column]
 			if !ok {
 				return fmt.Errorf("not valid in char in row:%v, column:%v", indexR, indexC)
 			}
