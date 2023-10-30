@@ -42,6 +42,7 @@ func (h *Handler) CalculateGame(w http.ResponseWriter, r *http.Request) {
 	}
 	result, err := h.service.GetCalculateDate(id)
 	if err != nil {
+		slog.Error("error in CalculateGame", "error", err)
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
 	}

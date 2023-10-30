@@ -19,8 +19,9 @@ type GameDate struct {
 	Payouts *Payouts // todo map
 }
 
+// nolint:gocritic //lazy
 // count of repeat char(first) in array char
-func (g *GameDate) getRepeatedCount(line *[5]string) int {
+func (g *GameDate) getRepeatedCount(line [5]string) int {
 	count := 1
 	for i := 0; i < 4; i++ {
 		if line[i] != line[i+1] {
@@ -32,9 +33,10 @@ func (g *GameDate) getRepeatedCount(line *[5]string) int {
 	return count
 }
 
+// nolint:gocritic //lazy
 // calculate one line win
 func (g *GameDate) calculateWinLinePayout(line [5]string) int {
-	count := g.getRepeatedCount(&line)
+	count := g.getRepeatedCount(line)
 	for _, payout := range *g.Payouts {
 		if payout.Symbol == line[0] {
 			return payout.Payout[count-1]
