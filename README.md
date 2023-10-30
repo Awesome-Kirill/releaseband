@@ -8,7 +8,7 @@ run/down app in docker
 
 run app
 
-`test app`
+`make run-app`
 
 run test
 
