@@ -45,11 +45,11 @@ const docTemplate = `{
         },
         "/game/{id}/lines": {
             "post": {
-                "description": "Return game result",
+                "description": "Create lines",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Return game result",
+                "summary": "Create lines",
                 "parameters": [
                     {
                         "type": "string",
@@ -73,9 +73,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.OkResponse"
                         }
                     }
                 }
@@ -83,11 +83,11 @@ const docTemplate = `{
         },
         "/game/{id}/payouts": {
             "post": {
-                "description": "Return game result",
+                "description": "Create payouts",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Return game result",
+                "summary": "Create payouts",
                 "parameters": [
                     {
                         "type": "string",
@@ -111,9 +111,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handler.OkResponse"
                         }
                     }
                 }
@@ -121,11 +121,11 @@ const docTemplate = `{
         },
         "/game/{id}/reels": {
             "post": {
-                "description": "Return game result",
+                "description": "Create reels",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Return game result",
+                "summary": "Create reels",
                 "parameters": [
                     {
                         "type": "string",
@@ -154,13 +154,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/handler.OkResponse"
                         }
                     }
                 }
@@ -231,6 +225,9 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "handler.OkResponse": {
+            "type": "object"
         }
     }
 }`
@@ -241,8 +238,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/v1",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "This is a sample server Petstore server.",
+	Title:            "Slot Game API",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

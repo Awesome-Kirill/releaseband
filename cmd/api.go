@@ -18,9 +18,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// @title Swagger Example API
+// @title Slot Game API
 // @version 1.0
-// @description This is a sample server Petstore server.
 // @contact.email k.a.stulnikov@gmail.com
 // @BasePath /v1
 

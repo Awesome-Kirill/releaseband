@@ -41,11 +41,12 @@ definitions:
           $ref: '#/definitions/domain.Position'
         type: array
     type: object
+  handler.OkResponse:
+    type: object
 info:
   contact:
     email: k.a.stulnikov@gmail.com
-  description: This is a sample server Petstore server.
-  title: Swagger Example API
+  title: Slot Game API
   version: "1.0"
 paths:
   /game/{id}/calculate:
@@ -67,7 +68,7 @@ paths:
       summary: Return game result
   /game/{id}/lines:
     post:
-      description: Return game result
+      description: Create lines
       parameters:
       - description: Game ID
         in: path
@@ -86,13 +87,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
-      summary: Return game result
+            $ref: '#/definitions/handler.OkResponse'
+      summary: Create lines
   /game/{id}/payouts:
     post:
-      description: Return game result
+      description: Create payouts
       parameters:
       - description: Game ID
         in: path
@@ -111,13 +112,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
-      summary: Return game result
+            $ref: '#/definitions/handler.OkResponse'
+      summary: Create payouts
   /game/{id}/reels:
     post:
-      description: Return game result
+      description: Create reels
       parameters:
       - description: Game ID
         in: path
@@ -140,10 +141,6 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              items:
-                type: string
-              type: array
-            type: array
-      summary: Return game result
+            $ref: '#/definitions/handler.OkResponse'
+      summary: Create reels
 swagger: "2.0"
