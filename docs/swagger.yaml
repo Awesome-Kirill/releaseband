@@ -84,7 +84,11 @@ paths:
           type: array
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
       summary: Return game result
   /game/{id}/payouts:
     post:
@@ -105,7 +109,11 @@ paths:
           type: array
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
       summary: Return game result
   /game/{id}/reels:
     post:
@@ -128,6 +136,14 @@ paths:
           type: array
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                type: string
+              type: array
+            type: array
       summary: Return game result
 swagger: "2.0"

@@ -15,6 +15,9 @@ import (
 // @Param id   path string true "Game ID"
 // @Param		some_id	body		domain.Reels		true	"Some ID"
 // @Produce     json
+//
+//	@Success		200		{object}	domain.Reels
+//
 // @Router      /game/{id}/reels [post]
 func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -39,7 +42,7 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
 	}
-	JSONResponse(w, http.StatusOK, struct{}{})
+	JSONResponse(w, http.StatusOK, OkResponse{})
 }
 
 // CreatePayouts godoc
@@ -48,6 +51,9 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 // @Param id   path string true "Game ID"
 // @Param		some_id	body		domain.Payouts		true	"Some ID"
 // @Produce     json
+//
+//	@Success		200		{string}	string			"ok"
+//
 // @Router      /game/{id}/payouts [post]
 func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -73,7 +79,7 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSONResponse(w, http.StatusOK, struct{}{})
+	JSONResponse(w, http.StatusOK, OkResponse{})
 }
 
 // CreateLines godoc
@@ -82,6 +88,9 @@ func (h *Handler) CreatePayouts(w http.ResponseWriter, r *http.Request) {
 // @Param id   path string true "Game ID"
 // @Param		some_id	body		domain.Lines		true	"Some ID"
 // @Produce     json
+//
+//	@Success		200		{string}	string			"ok"
+//
 // @Router      /game/{id}/lines [post]
 func (h *Handler) CreateLines(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -108,5 +117,7 @@ func (h *Handler) CreateLines(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSONResponse(w, http.StatusOK, struct{}{})
+	JSONResponse(w, http.StatusOK, OkResponse{})
 }
+
+type OkResponse struct{}
