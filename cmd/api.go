@@ -18,19 +18,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-/*
-Метрические данные должны включать в себя как минимум следующие метрики:
-
-Общее количество обработанных запросов к API-endpoints;
-Количество ошибок обработки HTTP запросов к API-endpoints;
-Данные по времени обработки HTTP запросов к API-endpoint;
-*/
-// Логирование
-// найминг
-// тесты
-// линтер
-// общая архитетура
-// валидация
+// run main
 func main() {
 
 	cfg := config.New()

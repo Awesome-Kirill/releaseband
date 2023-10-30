@@ -4,11 +4,6 @@ import (
 	"errors"
 )
 
-type Position struct {
-	Row int `json:"row"`
-	Col int `json:"col"`
-}
-
 type Line struct {
 	Index  int `json:"line"`
 	Payout int `json:"payout"`

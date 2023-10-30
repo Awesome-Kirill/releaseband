@@ -41,6 +41,7 @@ func (m *InMemory) SetPayouts(id string, payouts domain.Payouts) {
 	m.data[id] = &game
 }
 
+// SetLines set lines
 func (m *InMemory) SetLines(id string, lines domain.Lines) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -55,6 +56,7 @@ func (m *InMemory) SetLines(id string, lines domain.Lines) {
 	m.data[id] = &game
 }
 
+// SetReels set reels
 func (m *InMemory) SetReels(id string, reels domain.Reels) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
