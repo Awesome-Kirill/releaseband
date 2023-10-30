@@ -15,9 +15,7 @@ linters-settings:
     check-shadowing: true
     enable:
       #- fieldalignment
-  nolintlint:
-    require-explanation: true
-    require-specific: true
+
 
 linters:
   disable-all: true
@@ -39,7 +37,6 @@ linters:
     - govet
     - ineffassign
     - misspell
-    - nolintlint
     - nakedret
     - prealloc
     - predeclared

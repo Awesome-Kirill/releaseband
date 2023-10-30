@@ -23,18 +23,18 @@ func main() {
 
 	cfg := config.New()
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 
-	metricsMiddelware := metrics.New()
-
-	handler := handler.New(service.New(storage.New()))
+	metricsInterceptor := metrics.New()
+	handlerGame := handler.New(service.New(storage.New()))
 
 	r := mux.NewRouter()
-	r.HandleFunc("/v1/game/{id}/calculate", handler.CalculateGame).Methods("GET")
+	r.HandleFunc("/v1/game/{id}/calculate", handlerGame.CalculateGame).Methods("GET")
 
-	r.HandleFunc("/v1/game/{id}/reels", handler.CreateReels).Methods("POST")
-	r.HandleFunc("/v1/game/{id}/payouts", handler.CreatePayouts).Methods("POST")
-	r.HandleFunc("/v1/game/{id}/lines", handler.CreateLines).Methods("POST")
-	r.Use(metricsMiddelware.After)
+	r.HandleFunc("/v1/game/{id}/reels", handlerGame.CreateReels).Methods("POST")
+	r.HandleFunc("/v1/game/{id}/payouts", handlerGame.CreatePayouts).Methods("POST")
+	r.HandleFunc("/v1/game/{id}/lines", handlerGame.CreateLines).Methods("POST")
+	r.Use(metricsInterceptor.AfterRequest)
 	r.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{

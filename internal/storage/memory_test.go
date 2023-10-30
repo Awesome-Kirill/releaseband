@@ -9,7 +9,7 @@ import (
 func TestInMemory_GetGame(t *testing.T) {
 	id := "test_game_key"
 	m := New()
-	m.SetPayouts(id, domain.Payouts{})
+	m.SetPayouts(id, &domain.Payouts{})
 
 	tests := []struct {
 		name  string
@@ -24,7 +24,6 @@ func TestInMemory_GetGame(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
 			got, got1 := m.GetGame(tt.id)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetGame() got = %v, want %v", got, tt.want)
@@ -37,7 +36,6 @@ func TestInMemory_GetGame(t *testing.T) {
 }
 
 func TestInMemory_SetReels(t *testing.T) {
-
 	tests := []struct {
 		name  string
 		id    string
@@ -50,15 +48,13 @@ func TestInMemory_SetReels(t *testing.T) {
 	m := New()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
-			m.SetReels(tt.id, tt.reels)
+			m.SetReels(tt.id, &tt.reels)
 
 			got, _ := m.GetGame(tt.id)
 
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetGame() got = %v, want %v", got, tt.want)
 			}
-
 		})
 	}
 }
@@ -76,15 +72,13 @@ func TestInMemory_SetLines(t *testing.T) {
 	m := New()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
-			m.SetLines(tt.id, tt.lines)
+			m.SetLines(tt.id, &tt.lines)
 
 			got, _ := m.GetGame(tt.id)
 
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetGame() got = %v, want %v", got, tt.want)
 			}
-
 		})
 	}
 }
@@ -102,15 +96,13 @@ func TestInMemory_SetPayouts(t *testing.T) {
 	m := New()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
-			m.SetPayouts(tt.id, tt.pay)
+			m.SetPayouts(tt.id, &tt.pay)
 
 			got, _ := m.GetGame(tt.id)
 
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetGame() got = %v, want %v", got, tt.want)
 			}
-
 		})
 	}
 }

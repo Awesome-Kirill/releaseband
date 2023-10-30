@@ -27,7 +27,7 @@ func (m *InMemory) GetGame(id string) (*domain.GameDate, bool) {
 }
 
 // SetPayouts Set Payouts
-func (m *InMemory) SetPayouts(id string, payouts domain.Payouts) {
+func (m *InMemory) SetPayouts(id string, payouts *domain.Payouts) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	v, ok := m.data[id]
@@ -36,13 +36,13 @@ func (m *InMemory) SetPayouts(id string, payouts domain.Payouts) {
 		game = *v
 	}
 
-	game.Payouts = &payouts
+	game.Payouts = payouts
 
 	m.data[id] = &game
 }
 
 // SetLines set lines
-func (m *InMemory) SetLines(id string, lines domain.Lines) {
+func (m *InMemory) SetLines(id string, lines *domain.Lines) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	v, ok := m.data[id]
@@ -51,13 +51,13 @@ func (m *InMemory) SetLines(id string, lines domain.Lines) {
 		game = *v
 	}
 
-	game.Lines = &lines
+	game.Lines = lines
 
 	m.data[id] = &game
 }
 
 // SetReels set reels
-func (m *InMemory) SetReels(id string, reels domain.Reels) {
+func (m *InMemory) SetReels(id string, reels *domain.Reels) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	v, ok := m.data[id]
@@ -66,7 +66,7 @@ func (m *InMemory) SetReels(id string, reels domain.Reels) {
 		game = *v
 	}
 
-	game.Reels = &reels
+	game.Reels = reels
 
 	m.data[id] = &game
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"releaseband/internal/service"
 
@@ -16,11 +17,16 @@ func New(serv *service.Service) *Handler {
 	return &Handler{service: serv}
 }
 func JSONResponse(w http.ResponseWriter, code int, output interface{}) {
-	response, _ := json.Marshal(output)
-
+	response, err := json.Marshal(output)
+	if err != nil {
+		slog.Error("response marshal err", "error", err)
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
-	w.Write(response)
+	_, err = w.Write(response)
+	if err != nil {
+		slog.Error("write response err", "error", err)
+	}
 }
 
 type ErrorResponse struct {

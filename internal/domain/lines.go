@@ -2,6 +2,9 @@ package domain
 
 import "fmt"
 
+const MaxColumn = 5
+const MaxRows = 2
+
 type Lines []WinLine
 
 type WinLine struct {
@@ -16,14 +19,13 @@ type Position struct {
 
 // Validate Lines
 func (w Lines) Validate() error {
-
 	for _, line := range w {
 		for index, value := range line.Positions {
-			if value.Row > 2 {
+			if value.Row > MaxRows {
 				return fmt.Errorf("row:%v", index)
 			}
 
-			if value.Col > 5 {
+			if value.Col > MaxColumn {
 				return fmt.Errorf("col:%v", index)
 			}
 		}

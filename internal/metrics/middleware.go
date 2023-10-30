@@ -16,7 +16,7 @@ type Middleware struct {
 func New() *Middleware {
 	return &Middleware{client: NewPrometheusClient()}
 }
-func (m *Middleware) After(h http.Handler) http.Handler {
+func (m *Middleware) AfterRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
 

@@ -24,7 +24,7 @@ func (h *Handler) CreateReels(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	err = h.service.CreateReels(id, reels)
+	err = h.service.CreateReels(id, &reels)
 	if err != nil {
 		JSONResponse(w, http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
