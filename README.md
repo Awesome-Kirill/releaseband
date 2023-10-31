@@ -1,4 +1,9 @@
-# releaseband
+# Slot Game API
+
+<img  width="50%" src="./img/swag.png">
+
+
+****see swagger in /docs/swagger.yaml****
 
 run/down app in docker
 
@@ -15,20 +20,3 @@ run test
 `make test`
 
 `make cover`
-
-
-see swagger in /docs
-
-POST Create reels payouts lines
-
-/v1/game/{id}/reels 
-
-/v1/game/{id}/payouts
-
-/v1/game/{id}/lines
-
-
-GET get result game
-
-/v1/game/{id}/calculate
-
